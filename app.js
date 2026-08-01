@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCardCustomizer();
   initVIPPassForm();
   initWaitlistModal();
+  initCACopy();
 });
 
 /* ==========================================================================
@@ -455,6 +456,41 @@ function initWaitlistModal() {
         copyBtn.textContent = 'Copied to Clipboard! ✓';
         setTimeout(() => copyBtn.textContent = 'Copy Invite Link', 2000);
       }
+    });
+  }
+}
+
+/* ==========================================================================
+   9. CONTRACT ADDRESS (CA) COPY ENGINE
+   ========================================================================== */
+function initCACopy() {
+  const caAddress = '0xAaa777A7694575e0304AbB42Ff35e82e491f24E8';
+  const copyHeroBtn = document.getElementById('copy-ca-btn');
+  const copySwapBtn = document.getElementById('copy-ca-swap');
+
+  if (copyHeroBtn) {
+    copyHeroBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(caAddress);
+      const textSpan = copyHeroBtn.querySelector('.copy-text');
+      if (textSpan) textSpan.textContent = 'Copied! ✓';
+      copyHeroBtn.style.background = '#c6f135';
+      copyHeroBtn.style.color = '#050505';
+
+      setTimeout(() => {
+        if (textSpan) textSpan.textContent = 'Copy CA';
+        copyHeroBtn.style.background = '';
+        copyHeroBtn.style.color = '';
+      }, 2000);
+    });
+  }
+
+  if (copySwapBtn) {
+    copySwapBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(caAddress);
+      copySwapBtn.textContent = 'Copied! ✓';
+      setTimeout(() => {
+        copySwapBtn.textContent = '0xAaa7...24E8 📋';
+      }, 2000);
     });
   }
 }

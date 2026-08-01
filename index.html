@@ -81,6 +81,16 @@
           The autonomous AI-powered neobank designed for high-frequency liquidity, gasless transactions, and self-custodial wealth optimization on <strong>Robinhood Chain</strong>.
         </p>
 
+        <!-- Contract Address Banner -->
+        <div class="ca-container" id="ca-box">
+          <span class="ca-badge">CA</span>
+          <code class="ca-address" id="ca-address-text">0xAaa777A7694575e0304AbB42Ff35e82e491f24E8</code>
+          <button class="ca-copy-btn" id="copy-ca-btn" title="Copy Contract Address">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span class="copy-text">Copy CA</span>
+          </button>
+        </div>
+
         <div class="hero-cta-group">
           <button class="btn btn-lime btn-large" id="hero-join-btn">
             Get Early Access
@@ -388,6 +398,7 @@
                 <div class="s-row"><span>Slippage Tolerance</span><span>0.1%</span></div>
                 <div class="s-row"><span>Gas Fee</span><span class="text-lime">$0.00 (Gasless)</span></div>
                 <div class="s-row"><span>Route</span><span>Robinhood Chain Direct Swap</span></div>
+                <div class="s-row"><span>KLVI Contract</span><span class="ca-mini" id="copy-ca-swap">0xAaa7...24E8 📋</span></div>
               </div>
 
               <button class="btn btn-lime btn-full btn-large" id="execute-swap-btn">Execute Instant Swap</button>

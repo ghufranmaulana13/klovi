@@ -261,6 +261,73 @@ h1, h2, h3, h4 {
   box-shadow: 0 0 8px #22c55e;
 }
 
+/* Contract Address Banner Styles */
+.ca-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(15, 15, 18, 0.85);
+  border: 1px solid rgba(198, 241, 53, 0.35);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 20px rgba(198, 241, 53, 0.1);
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+
+.ca-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: var(--lime);
+  color: var(--ink);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.ca-address {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--lime);
+  letter-spacing: 0.03em;
+  word-break: break-all;
+}
+
+.ca-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.ca-copy-btn:hover {
+  background: var(--lime);
+  color: var(--ink);
+  border-color: var(--lime);
+}
+
+.ca-mini {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--lime);
+  cursor: pointer;
+  padding: 0.1rem 0.4rem;
+  background: rgba(198, 241, 53, 0.1);
+  border-radius: 4px;
+}
+.ca-mini:hover {
+  background: rgba(198, 241, 53, 0.25);
+}
+
 /* ==========================================================================
    HERO SECTION
    ========================================================================== */
