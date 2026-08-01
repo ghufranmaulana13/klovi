@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050505" />
+  <title>Klovi | AI-Powered Neobank on Robinhood Chain</title>
+  <meta name="description" content="Make your own luck. The world's first AI-native neobank built on Robinhood Chain with autonomous yield optimization and instant virtual cards." />
+  
+  <!-- Favicon / Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient Particle Canvas Background -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="noise-overlay"></div>
+
+  <!-- Main Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo" aria-label="klovi home">
+        <svg class="klovi-wordmark" viewBox="0 0 340 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="brand-grad" x1="0" y1="0" x2="340" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="60%" stop-color="#e0e0e0"/>
+              <stop offset="100%" stop-color="#c6f135"/>
+            </linearGradient>
+          </defs>
+          <!-- k -->
+          <line x1="16" y1="26" x2="16" y2="94" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round"/>
+          <line x1="16" y1="60" x2="52" y2="26" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round"/>
+          <line x1="30" y1="46" x2="54" y2="94" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round"/>
+          <!-- l -->
+          <line x1="76" y1="26" x2="76" y2="94" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round"/>
+          <!-- o -->
+          <ellipse cx="120" cy="67" rx="22" ry="27" stroke="url(#brand-grad)" stroke-width="12" fill="none"/>
+          <!-- v -->
+          <line x1="156" y1="40" x2="176" y2="94" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round"/>
+          <line x1="196" y1="40" x2="176" y2="94" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round"/>
+          <!-- i dot & stem -->
+          <circle cx="224" cy="31" r="7" fill="#c6f135"/>
+          <line x1="224" y1="48" x2="224" y2="94" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#dashboard" class="nav-link">Live App Demo</a>
+        <a href="#card-customizer" class="nav-link">Klovi Card</a>
+        <a href="#yield-calc" class="nav-link">Yield Engine</a>
+        <a href="#vip-pass" class="nav-link">VIP Pass</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="chain-status-badge">
+          <span class="status-dot"></span>
+          <span class="chain-name">Robinhood L2 Mainnet-Beta</span>
+        </div>
+        <button class="btn btn-lime btn-glow" id="open-waitlist-btn">Join Waitlist</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="pill-badge" id="hero-badge">
+          <span class="dot-pulsing"></span>
+          <span>Next-Gen AI Banking • Robinhood Chain</span>
+        </div>
+
+        <h1 class="hero-title">make your <span class="text-gradient">own luck.</span></h1>
+        
+        <p class="hero-description">
+          The autonomous AI-powered neobank designed for high-frequency liquidity, gasless transactions, and self-custodial wealth optimization on <strong>Robinhood Chain</strong>.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="btn btn-lime btn-large" id="hero-join-btn">
+            Get Early Access
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <a href="#dashboard" class="btn btn-outline btn-large">
+            Explore Interactive Demo
+          </a>
+        </div>
+
+        <div class="hero-metrics">
+          <div class="metric-item">
+            <span class="metric-val" id="waitlist-counter">142,890+</span>
+            <span class="metric-lbl">Early Members</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <span class="metric-val">12.8%</span>
+            <span class="metric-lbl">Target Staking APY</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <span class="metric-val">&lt; 0.001s</span>
+            <span class="metric-lbl">Execution Time</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card-display">
+        <div class="card-3d-wrapper" id="hero-card-container">
+          <div class="klovi-card hero-card-front" id="hero-card">
+            <div class="card-glass-glow"></div>
+            <div class="card-top">
+              <span class="card-brand">klovi</span>
+              <span class="card-chip-icon">
+                <svg width="42" height="32" viewBox="0 0 42 32" fill="none">
+                  <rect x="1" y="1" width="40" height="30" rx="4" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="url(#chip-bg)"/>
+                  <path d="M1 11h14M1 21h14M27 11h14M27 21h14M15 1v30M27 1v30" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                  <defs>
+                    <linearGradient id="chip-bg" x1="0" y1="0" x2="42" y2="32">
+                      <stop offset="0%" stop-color="#d4af37"/>
+                      <stop offset="100%" stop-color="#aa7c11"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+            </div>
+            <div class="card-middle">
+              <span class="card-number">•••• •••• •••• 9842</span>
+            </div>
+            <div class="card-bottom">
+              <div class="card-holder">
+                <span class="card-label">CARDHOLDER</span>
+                <span class="card-val" id="hero-card-name">EARLY ADOPTER</span>
+              </div>
+              <div class="card-network">
+                <span class="badge-rh">ROBINHOOD CHAIN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE DEMO / DASHBOARD PREVIEW SECTION -->
+    <section id="dashboard" class="dashboard-section">
+      <div class="section-header">
+        <div class="tag-pill">INTERACTIVE APP PREVIEW</div>
+        <h2>Experience Autonomous AI Banking</h2>
+        <p>Manage your portfolios, let Klovi Copilot execute smart rebalancing, and earn yields natively on Robinhood Chain.</p>
+      </div>
+
+      <div class="app-dashboard-container">
+        <!-- Sidebar Navigation inside App -->
+        <aside class="app-sidebar">
+          <div class="sidebar-user">
+            <div class="avatar-ring">
+              <div class="avatar">AI</div>
+            </div>
+            <div class="user-meta">
+              <span class="user-name">Alex Vance</span>
+              <span class="user-tier">PRO • Robinhood L2</span>
+            </div>
+          </div>
+
+          <nav class="app-nav">
+            <button class="app-nav-item active" data-tab="overview">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              Overview
+            </button>
+            <button class="app-nav-item" data-tab="copilot">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.5 7.5"/><path d="M12 12v10"/></svg>
+              Klovi Copilot
+              <span class="badge-mini">AI active</span>
+            </button>
+            <button class="app-nav-item" data-tab="vaults">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              Yield Vaults
+            </button>
+            <button class="app-nav-item" data-tab="swap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><line x1="3" y1="5" x2="21" y2="5"/><polyline points="7 23 3 19 7 15"/><line x1="21" y1="19" x2="3" y2="19"/></svg>
+              Instant Swap
+            </button>
+          </nav>
+
+          <div class="sidebar-footer">
+            <div class="ai-status-card">
+              <span class="ai-dot"></span>
+              <div>
+                <strong>Auto-Rebalancer</strong>
+                <p>Optimizing +12.4% APY</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Dashboard View Area -->
+        <div class="app-main-content">
+          <!-- Overview Tab -->
+          <div class="dashboard-tab active" id="tab-overview">
+            <div class="balance-grid">
+              <div class="balance-card primary-card">
+                <span class="card-label">NET WORTH & ASSETS</span>
+                <h3 class="balance-val">$48,290.50 <span class="balance-change positive">+8.42% (24h)</span></h3>
+                <div class="asset-chips">
+                  <span class="chip">14.2 RH-ETH</span>
+                  <span class="chip">125,000 KLVI</span>
+                  <span class="chip">$15,400 USDC</span>
+                </div>
+              </div>
+
+              <div class="balance-card">
+                <span class="card-label">ROBINHOOD YIELD EARNED</span>
+                <h3 class="balance-val">$1,842.10 <span class="balance-sub">+ $14.20/day</span></h3>
+                <p class="card-sub-text">Auto-staked via Robinhood L2 Liquidity Pool</p>
+              </div>
+            </div>
+
+            <!-- Portfolio Chart Component -->
+            <div class="chart-container-box">
+              <div class="chart-header">
+                <div>
+                  <h4>Portfolio Growth</h4>
+                  <p>Real-time analytics & AI predictive trend line</p>
+                </div>
+                <div class="chart-controls">
+                  <button class="chart-btn" data-time="1D">1D</button>
+                  <button class="chart-btn" data-time="1W">1W</button>
+                  <button class="chart-btn active" data-time="1M">1M</button>
+                  <button class="chart-btn" data-time="1Y">1Y</button>
+                  <button class="chart-btn" data-time="ALL">ALL</button>
+                </div>
+              </div>
+
+              <div class="svg-chart-wrapper">
+                <svg id="portfolio-chart" viewBox="0 0 800 240" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#c6f135" stop-opacity="0.35"/>
+                      <stop offset="100%" stop-color="#c6f135" stop-opacity="0.0"/>
+                    </linearGradient>
+                  </defs>
+                  <path id="chart-area" d="M 0 200 L 0 160 Q 150 120 300 140 T 600 60 T 800 30 L 800 240 L 0 240 Z" fill="url(#chartGrad)"/>
+                  <path id="chart-line" d="M 0 160 Q 150 120 300 140 T 600 60 T 800 30" fill="none" stroke="#c6f135" stroke-width="3.5" stroke-linecap="round"/>
+                </svg>
+                <div class="chart-tooltip" id="chart-tooltip">
+                  <span class="tt-date">Aug 01, 2026</span>
+                  <span class="tt-val">$48,290.50</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transactions Table -->
+            <div class="transactions-box">
+              <div class="box-header">
+                <h4>Recent Transactions & AI Actions</h4>
+                <button class="btn btn-link" id="view-all-tx">Export Receipts</button>
+              </div>
+              <div class="tx-list">
+                <div class="tx-item">
+                  <div class="tx-icon ai-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c6f135" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  </div>
+                  <div class="tx-details">
+                    <strong>Auto-Yield Harvest & Stake</strong>
+                    <span>Robinhood Chain Vault #04 • Gasless</span>
+                  </div>
+                  <div class="tx-amount positive">+ $142.50 USDC</div>
+                </div>
+
+                <div class="tx-item">
+                  <div class="tx-icon card-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  </div>
+                  <div class="tx-details">
+                    <strong>Klovi Card Purchase • OpenAI API</strong>
+                    <span>Virtual Card • 2% CashBack in $KLVI</span>
+                  </div>
+                  <div class="tx-amount">- $20.00 USDC</div>
+                </div>
+
+                <div class="tx-item">
+                  <div class="tx-icon swap-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2"><polyline points="17 1 21 5 17 9"/><line x1="3" y1="5" x2="21" y2="5"/></svg>
+                  </div>
+                  <div class="tx-details">
+                    <strong>Swap USDC to KLVI Token</strong>
+                    <span>Robinhood Chain DEX Router</span>
+                  </div>
+                  <div class="tx-amount">+ 15,000 KLVI</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Copilot Tab -->
+          <div class="dashboard-tab" id="tab-copilot">
+            <div class="copilot-container">
+              <div class="chat-header">
+                <div class="bot-info">
+                  <span class="bot-avatar">🤖</span>
+                  <div>
+                    <h4>Klovi Copilot AI</h4>
+                    <span class="bot-status">Online • Robinhood Chain AI Agent</span>
+                  </div>
+                </div>
+                <button class="btn btn-outline btn-sm" id="clear-chat">Reset Chat</button>
+              </div>
+
+              <div class="chat-messages" id="chat-messages">
+                <div class="message msg-bot">
+                  <div class="msg-content">
+                    Hello Alex! I am your personal financial AI. I am currently monitoring Robinhood Chain yield pools. How can I assist your portfolio today?
+                  </div>
+                </div>
+              </div>
+
+              <div class="chat-quick-prompts">
+                <button class="quick-btn" data-prompt="Optimize my yield on Robinhood Chain">⚡ Optimize Yield</button>
+                <button class="quick-btn" data-prompt="Show my monthly expense analysis">📊 Expense Breakdown</button>
+                <button class="quick-btn" data-prompt="Issue a single-use virtual card">💳 Single-Use Card</button>
+              </div>
+
+              <form class="chat-input-area" id="chat-form">
+                <input type="text" id="chat-input" placeholder="Ask Klovi Copilot to rebalance, stake, or pay..." autocomplete="off" />
+                <button type="submit" class="btn btn-lime">
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Vaults Tab -->
+          <div class="dashboard-tab" id="tab-vaults">
+            <div class="vaults-grid">
+              <div class="vault-card">
+                <div class="vault-badge">HIGHEST YIELD</div>
+                <h3>Robinhood L2 Liquid ETH Vault</h3>
+                <div class="vault-apy">14.8% <span>APY</span></div>
+                <p>Auto-compound stETH on Robinhood Chain with zero-gas fee execution.</p>
+                <div class="vault-meta">
+                  <span>TVL: $84.2M</span>
+                  <span>Risk: Low</span>
+                </div>
+                <button class="btn btn-lime btn-full stake-action-btn">Deposit & Stake</button>
+              </div>
+
+              <div class="vault-card">
+                <div class="vault-badge">STABLECOIN</div>
+                <h3>Klovi USDC Yield Optimizer</h3>
+                <div class="vault-apy">11.2% <span>APY</span></div>
+                <p>Automated delta-neutral yield strategies across Robinhood DEX protocols.</p>
+                <div class="vault-meta">
+                  <span>TVL: $120.5M</span>
+                  <span>Risk: Minimal</span>
+                </div>
+                <button class="btn btn-lime btn-full stake-action-btn">Deposit & Stake</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Swap Tab -->
+          <div class="dashboard-tab" id="tab-swap">
+            <div class="swap-box">
+              <h3>Robinhood Chain Instant Swap</h3>
+              <p class="swap-sub">Gasless routing powered by Klovi AI execution</p>
+              
+              <div class="swap-input-group">
+                <div class="swap-field">
+                  <label>Pay</label>
+                  <input type="number" value="1000" id="swap-pay-amount" />
+                  <span class="token-select">USDC</span>
+                </div>
+                <div class="swap-divider">
+                  <button id="swap-reverse-btn">↓</button>
+                </div>
+                <div class="swap-field">
+                  <label>Receive (Estimated)</label>
+                  <input type="number" value="8420.50" id="swap-receive-amount" readonly />
+                  <span class="token-select">KLVI</span>
+                </div>
+              </div>
+
+              <div class="swap-details">
+                <div class="s-row"><span>Slippage Tolerance</span><span>0.1%</span></div>
+                <div class="s-row"><span>Gas Fee</span><span class="text-lime">$0.00 (Gasless)</span></div>
+                <div class="s-row"><span>Route</span><span>Robinhood Chain Direct Swap</span></div>
+              </div>
+
+              <button class="btn btn-lime btn-full btn-large" id="execute-swap-btn">Execute Instant Swap</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE FEATURES SECTION -->
+    <section id="features" class="features-section">
+      <div class="section-header">
+        <div class="tag-pill">ENGINEERED FOR THE FUTURE</div>
+        <h2>Built Different. Built Autonomous.</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Gasless Robinhood L2 Engine</h3>
+          <p>Execute micro-transactions and instant wallet swaps without ever paying expensive network gas fees. Built directly on Robinhood Chain.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3>Autonomous Financial Agent</h3>
+          <p>Klovi Copilot analyzes market shifts 24/7 to rebalance your savings, optimize yields, and protect against liquidation risks.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💳</div>
+          <h3>Smart Burner & Debit Cards</h3>
+          <p>Issue instant virtual cards for online shopping. Earn 2% to 5% cash back in liquid $KLVI tokens on every swipe.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>MPC Non-Custodial Security</h3>
+          <p>You maintain full ownership of your private keys. Powered by Multi-Party Computation and biometric authentication.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE YIELD & APY CALCULATOR -->
+    <section id="yield-calc" class="calc-section">
+      <div class="calc-container">
+        <div class="calc-text">
+          <div class="tag-pill">YIELD ENGINE</div>
+          <h2>Calculate Your Compound Wealth</h2>
+          <p>See how much more your capital grows on Robinhood Chain compared to traditional low-interest banks.</p>
+
+          <div class="calc-inputs">
+            <div class="input-range-group">
+              <div class="range-header">
+                <label>Deposit Amount</label>
+                <span class="range-val" id="dep-val-text">$25,000</span>
+              </div>
+              <input type="range" id="dep-slider" min="1000" max="200000" step="1000" value="25000" />
+            </div>
+
+            <div class="input-range-group">
+              <div class="range-header">
+                <label>Investment Timeframe</label>
+                <span class="range-val" id="time-val-text">3 Years</span>
+              </div>
+              <input type="range" id="time-slider" min="1" max="5" step="1" value="3" />
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-result-box">
+          <div class="comparison-card highlight-card">
+            <span class="comp-label">Klovi AI Yield (12.8% APY)</span>
+            <h3 class="comp-val text-lime" id="klovi-yield-res">$35,873.12</h3>
+            <span class="comp-growth" id="klovi-growth-res">+$10,873.12 interest</span>
+          </div>
+
+          <div class="comparison-card">
+            <span class="comp-label">Traditional Bank (0.05% APY)</span>
+            <h3 class="comp-val text-muted" id="bank-yield-res">$25,037.52</h3>
+            <span class="comp-growth">+$37.52 interest</span>
+          </div>
+
+          <div class="calc-diff-badge">
+            Earn <strong id="diff-mult">289x</strong> more return with Klovi on Robinhood Chain
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARD CUSTOMIZER SECTION -->
+    <section id="card-customizer" class="customizer-section">
+      <div class="section-header">
+        <div class="tag-pill">KLVI HARDWARE & DIGITAL</div>
+        <h2>Customize Your Klovi Card</h2>
+        <p>Design your sleek metal card with real-time 3D tilt previewing.</p>
+      </div>
+
+      <div class="customizer-workspace">
+        <div class="card-preview-stage">
+          <div class="interactive-card-frame" id="custom-card-frame">
+            <div class="klovi-card-large theme-obsidian" id="custom-card-render">
+              <div class="card-shimmer"></div>
+              <div class="c-top">
+                <span class="c-brand">klovi</span>
+                <span class="c-type" id="card-type-label">PLATINUM OAK</span>
+              </div>
+              <div class="c-chip">
+                <svg width="48" height="36" viewBox="0 0 42 32" fill="none"><rect width="42" height="32" rx="4" fill="#d4af37"/></svg>
+              </div>
+              <div class="c-number">4920 8812 0041 9931</div>
+              <div class="c-bottom">
+                <div class="c-holder">
+                  <small>NAME</small>
+                  <span id="cust-card-name-display">ALEX VANCE</span>
+                </div>
+                <div class="c-rh-tag">ROBINHOOD L2</div>
+              </div>
+            </div>
+          </div>
+          <p class="tilt-hint">💡 Hover and move your mouse to tilt in 3D</p>
+        </div>
+
+        <div class="customizer-controls">
+          <div class="control-group">
+            <label>Cardholder Name</label>
+            <input type="text" id="cust-card-name-input" value="ALEX VANCE" maxlength="20" placeholder="ENTER YOUR NAME" />
+          </div>
+
+          <div class="control-group">
+            <label>Select Finish & Edition</label>
+            <div class="color-options">
+              <button class="color-btn active" data-theme="obsidian" style="background:#0a0a0a; border-color:#c6f135;">
+                Obsidian Black
+              </button>
+              <button class="color-btn" data-theme="lime" style="background:#c6f135; color:#050505;">
+                Electric Lime
+              </button>
+              <button class="color-btn" data-theme="cyber" style="background:linear-gradient(135deg, #1e1e24, #3a3d52);">
+                Cyber Chrome
+              </button>
+            </div>
+          </div>
+
+          <button class="btn btn-lime btn-large btn-full" id="reserve-card-btn">Reserve This Card Design</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIP PASS GENERATOR & EARLY ACCESS -->
+    <section id="vip-pass" class="vip-section">
+      <div class="vip-container">
+        <div class="vip-info">
+          <div class="tag-pill">LIMITED EDITION</div>
+          <h2>Claim Your Early Access VIP Pass</h2>
+          <p>Generate your personalized on-chain pass to unlock zero-fee trading, 5% extra cashback, and priority access at launch.</p>
+          
+          <form id="vip-form" class="vip-form">
+            <input type="text" id="vip-name-input" placeholder="Your Handle / Name" required />
+            <input type="email" id="vip-email-input" placeholder="Your Email Address" required />
+            <button type="submit" class="btn btn-lime btn-large">Generate VIP Pass</button>
+          </form>
+        </div>
+
+        <div class="vip-pass-display">
+          <div class="ticket-card" id="ticket-card">
+            <div class="ticket-header">
+              <span class="ticket-brand">klovi PASS</span>
+              <span class="ticket-no">#04891</span>
+            </div>
+            <div class="ticket-body">
+              <h3 id="ticket-holder-name">EARLY ADOPTER</h3>
+              <p class="ticket-access">Tier 1 Founder Access • Robinhood L2</p>
+              <div class="ticket-perks">
+                <span>✓ 0% Swap Fees</span>
+                <span>✓ 14.8% Staking Boost</span>
+                <span>✓ Metal Card Priority</span>
+              </div>
+            </div>
+            <div class="ticket-footer">
+              <div class="qr-mock">
+                <svg width="60" height="60" viewBox="0 0 100 100" fill="#c6f135">
+                  <rect x="10" y="10" width="30" height="30"/>
+                  <rect x="60" y="10" width="30" height="30"/>
+                  <rect x="10" y="60" width="30" height="30"/>
+                  <rect x="50" y="50" width="20" height="20"/>
+                  <rect x="70" y="70" width="20" height="20"/>
+                </svg>
+              </div>
+              <div class="ticket-code">ROBINHOOD-KLVI-2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <svg class="klovi-wordmark-sm" viewBox="0 0 340 120" fill="none">
+          <use href=".klovi-wordmark"></use>
+        </svg>
+        <p>The AI-native neobank built on Robinhood Chain.</p>
+        <div class="audit-badges">
+          <span class="audit-tag">Audited by CertiK</span>
+          <span class="audit-tag">OpenZeppelin Verified</span>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div class="link-col">
+          <h5>Product</h5>
+          <a href="#dashboard">Klovi Copilot</a>
+          <a href="#yield-calc">Yield Optimizer</a>
+          <a href="#card-customizer">Smart Cards</a>
+          <a href="#dashboard">Gasless Swap</a>
+        </div>
+        <div class="link-col">
+          <h5>Ecosystem</h5>
+          <a href="#">Robinhood Chain</a>
+          <a href="#">Documentation</a>
+          <a href="#">Whitepaper</a>
+          <a href="#">Security Audit</a>
+        </div>
+        <div class="link-col">
+          <h5>Community</h5>
+          <a href="#">Twitter / X</a>
+          <a href="#">Discord</a>
+          <a href="#">Telegram</a>
+          <a href="#">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Klovi Technologies Inc. All rights reserved. Built on Robinhood Chain.</p>
+    </div>
+  </footer>
+
+  <!-- WAITLIST MODAL -->
+  <dialog id="waitlist-modal" class="custom-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="close-modal">&times;</button>
+      <div class="modal-header">
+        <span class="modal-icon">🚀</span>
+        <h3>Join Klovi Priority Waitlist</h3>
+        <p>Get instant early access to Robinhood Chain AI Neobanking.</p>
+      </div>
+
+      <form id="modal-form">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="modal-email" placeholder="name@domain.com" required />
+        </div>
+        <div class="form-group">
+          <label>Wallet Address (Optional)</label>
+          <input type="text" id="modal-wallet" placeholder="0x..." />
+        </div>
+        <button type="submit" class="btn btn-lime btn-full btn-large">Reserve My Spot</button>
+      </form>
+
+      <div class="modal-success hidden" id="modal-success">
+        <div class="success-icon">🎉</div>
+        <h4>You are on the list!</h4>
+        <p>Your reserved position: <strong class="text-lime" id="user-position-num">#142,891</strong></p>
+        <p class="share-link-text">Share your unique link to skip the line:</p>
+        <input type="text" readonly value="https://klovi.site/join?ref=KLVI-9842" id="share-input" />
+        <button class="btn btn-outline btn-full" id="copy-ref-btn">Copy Invite Link</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
